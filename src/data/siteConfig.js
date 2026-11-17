@@ -13,9 +13,9 @@ export const siteConfig = {
   description:
     'MoveMantra brings personalised physiotherapy and rehabilitation to your home – for pain, injuries, post-operative recovery, neurological conditions and healthy ageing.',
 
-  // PLACEHOLDER – your production domain (no trailing slash). Used for canonical URLs,
-  // Open Graph tags and sitemap.xml.
-  siteUrl: 'https://www.movemantra.in',
+  // The live website address (no trailing slash). Used for canonical URLs, Open Graph tags and sitemap.xml.
+  // Change this if you add a custom domain later.
+  siteUrl: 'https://movemantra.pages.dev',
 
   contact: {
     // Number for phone calls – displayed format and dialable (E.164) format.

@@ -3,4 +3,4 @@ Allow: /
 Disallow: /manage-reviews
 Disallow: /api/
 
-Sitemap: https://www.movemantra.in/sitemap.xml
+Sitemap: https://movemantra.pages.dev/sitemap.xml
