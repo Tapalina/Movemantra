@@ -7,13 +7,16 @@ import HomeHero from '../components/sections/HomeHero';
 import HowItWorks from '../components/sections/HowItWorks';
 import IntroSplit from '../components/sections/IntroSplit';
 import ServicesGrid from '../components/sections/ServicesGrid';
-import Testimonials from '../components/sections/Testimonials';
+import ReviewsSection from '../components/sections/ReviewsSection';
 import WhyChoose from '../components/sections/WhyChoose';
 import Container from '../components/ui/Container';
 import SectionHeading from '../components/ui/SectionHeading';
 import { cityLabel } from '../data/siteConfig';
+import { useReviews } from '../hooks/useReviews';
 
 export default function Home() {
+  const reviews = useReviews(6);
+
   return (
     <>
       <Seo
@@ -48,7 +51,7 @@ export default function Home() {
       <HowItWorks />
       <HomeBenefits />
       <AreasServed />
-      <Testimonials className="bg-white pt-0 lg:pt-0" />
+      <ReviewsSection reviews={reviews} className="bg-white" />
       <FaqSection />
       <CtaBanner />
     </>

@@ -6,6 +6,11 @@ export default defineConfig({
   server: {
     port: 5173,
     open: true,
+    // Reviews API (Cloudflare Pages Functions) runs on 8788 via `npm run dev:api`.
+    proxy: { '/api': 'http://127.0.0.1:8788' },
+  },
+  preview: {
+    proxy: { '/api': 'http://127.0.0.1:8788' },
   },
   build: {
     rollupOptions: {

@@ -62,10 +62,6 @@ export const siteConfig = {
   },
 
   feedback: {
-    // Free form-to-email service. Create an access key at https://web3forms.com using the inbox that
-    // should receive feedback, and paste it here (the key is designed to be public).
-    // Leave empty and feedback is sent via WhatsApp instead.
-    web3formsAccessKey: '',
     // Your Google Business Profile review link ("Ask for reviews" → copy link).
     // Leave empty to hide the "Review us on Google" buttons.
     googleReviewUrl: '',

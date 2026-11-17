@@ -16,7 +16,7 @@ npm run dev      # starts http://localhost:5173 and opens your browser
 
 | Command           | What it does                                                      |
 | ----------------- | ----------------------------------------------------------------- |
-| `npm run dev`     | Development server with hot reload on `http://localhost:5173`     |
+| `npm run dev`     | Website on `http://localhost:5173` plus the reviews API (with a local database) |
 | `npm run build`   | Regenerates `sitemap.xml` and `robots.txt`, then builds to `dist/` |
 | `npm run preview` | Serves the production build locally to check it                   |
 | `npm run sitemap` | Regenerates `public/sitemap.xml` and `public/robots.txt` only     |
@@ -34,7 +34,6 @@ All business details and content live in `src/data/`. You never need to touch co
 | `src/data/services.js`   | The seven services: titles, summaries, detail-page copy, SEO title and description           |
 | `src/data/content.js`    | "How it works" steps, reasons to choose MoveMantra, home-visit benefits, visit expectations, FAQs |
 | `src/data/images.js`     | Every photo and its alt text                                                                 |
-| `src/data/testimonials.js` | Approved patient reviews shown on the site                                                 |
 
 ### Placeholders to replace before going live
 
@@ -57,13 +56,16 @@ Every WhatsApp button builds its link from `siteConfig.whatsapp` using `src/util
 
 The Contact page enquiry form has no backend. After validating the fields, it opens WhatsApp (or the user's email app) with the details prefilled. To store enquiries later, replace the submit handler in `src/components/sections/EnquiryForm.jsx` with a call to a form service.
 
-### Patient feedback (ratings and comments)
+### Patient reviews (ratings and comments)
 
-The **Feedback page** (`/feedback`, linked from the homepage and footer) lets patients give a 1–5 star rating, comments, and optionally their name and service.
+Patients can post a 1–5 star rating with a comment on the **Feedback page** (`/feedback`). Reviews are **published immediately**, Google-style, and appear on the Feedback page and on the homepage.
 
-- **Where feedback goes:** by default, submitting opens WhatsApp with the feedback prefilled to your WhatsApp number. To receive it **by email** instead, with no app step for the patient, create a free access key at [web3forms.com](https://web3forms.com) and paste it into `feedback.web3formsAccessKey` in `siteConfig.js`.
-- **Google reviews:** paste your Google Business Profile review link into `feedback.googleReviewUrl`. This shows "Review us on Google" buttons, and patients who give 4–5 stars are invited to post a Google review too.
-- **Showing reviews on the site:** add approved feedback to `src/data/testimonials.js`. Only add feedback where the patient ticked "MoveMantra may share my feedback". A reviews section with the average rating then appears on the Home and Feedback pages. While the list is empty, the homepage shows an invitation to leave feedback instead.
+- **Deleting reviews:** go to `/manage-reviews` and sign in with the admin password. Each review has a **Delete** button.
+- **How it works:** a small API in `functions/api/` (Cloudflare Pages Functions) stores reviews in a Cloudflare D1 database. Shared logic and validation live in `server/reviews.js`.
+- **Spam protection:** a hidden bot trap, a limit of 3 reviews per device per day, length limits, and no links allowed.
+- **Going live:** create the database and set the admin password as described in **Step 3b of [DEPLOYMENT.md](DEPLOYMENT.md)**.
+- **Locally:** `npm run dev` runs the API with a local database automatically. The local admin password is in `.dev.vars` (copy `.dev.vars.example` if it's missing). This file is never committed. Local reviews are kept in `.wrangler/` and never reach the live site.
+- **Google reviews (optional):** paste your Google Business Profile review link into `feedback.googleReviewUrl` in `siteConfig.js` to show "Review us on Google" buttons.
 
 ### Images
 
@@ -82,7 +84,9 @@ If an image fails to load, the site shows a branded placeholder instead of a bro
 
 ```
 movemantra/
+├── functions/api/          reviews API (Cloudflare Pages Functions)
 ├── public/                 favicon, og-image, robots.txt, sitemap.xml
+├── server/                 shared reviews logic: validation, database, admin check
 ├── scripts/
 │   └── generate-sitemap.mjs
 ├── src/
@@ -95,7 +99,7 @@ movemantra/
 │   ├── data/               ← all editable content and configuration
 │   ├── hooks/              useScrolled, useLockBodyScroll, useScrollToTop
 │   ├── layouts/            RootLayout (header, footer, skip link, Suspense)
-│   ├── pages/              Home, About, Services, ServiceDetail, HomeVisits, Contact, NotFound, RouteError
+│   ├── pages/              Home, About, Services, ServiceDetail, HomeVisits, Contact, Feedback, ManageReviews, NotFound, RouteError
 │   ├── utils/              whatsapp/contact link builders, cn()
 │   ├── App.jsx             routes
 │   ├── main.jsx

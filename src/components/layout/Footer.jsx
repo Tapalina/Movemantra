@@ -65,7 +65,7 @@ export default function Footer() {
         <div className="lg:col-span-2">
           <FooterHeading>Explore</FooterHeading>
           <ul className="mt-5 space-y-3">
-            {[...navLinks, { label: 'Patient Feedback', to: '/feedback' }].map((link) => (
+            {[...navLinks, { label: 'Patient Reviews', to: '/feedback' }].map((link) => (
               <li key={link.to}>
                 <Link to={link.to} className={linkClass}>
                   {link.label}

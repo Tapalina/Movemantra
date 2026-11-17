@@ -94,6 +94,34 @@ It should finish with `✓ built in …`.
 
 When it finishes, Cloudflare shows your live address, such as **`https://movemantra.pages.dev`**. If that name was taken, the address will have a suffix.
 
+## Step 3b – Connect the reviews database
+
+Patient reviews are stored in **Cloudflare D1**, a free database. The website works without it, but reviews can't be posted or shown until you complete this step. It takes about 3 minutes.
+
+1. **Create the database.** In the Cloudflare dashboard, open **Storage & Databases → D1 SQL Database → Create**.
+   - Name: `movemantra-reviews`, then click **Create**.
+   - You don't need to create any tables. The website does that automatically the first time someone loads or posts a review.
+2. **Connect it to the website.** Go to **Workers & Pages → movemantra → Settings → Bindings → Add → D1 database**.
+   - **Variable name:** `DB` (exactly this, in capitals)
+   - **D1 database:** `movemantra-reviews`
+   - Click **Save**.
+3. **Set your admin password** (this is what you'll use to delete reviews). Go to **Settings → Variables and Secrets → Add**.
+   - **Type:** Secret
+   - **Variable name:** `ADMIN_PASSWORD`
+   - **Value:** a strong password of at least 12 characters, not used anywhere else. Store it in your password manager.
+   - Click **Save**.
+4. **Redeploy** so the new settings take effect. Go to **Deployments**, open the menu (⋯) on the latest deployment, and click **Retry deployment**. Settings changes only apply to new deployments.
+
+**To check it worked,** open `https://<your-site>.pages.dev/feedback`. You should see "No reviews yet – be the first…" rather than an error message.
+
+### Managing reviews
+
+- Reviews appear on the website **immediately** after a patient posts them: on the Feedback page and, newest first, on the homepage.
+- To delete one, go to **`https://<your-site>.pages.dev/manage-reviews`** and sign in with your `ADMIN_PASSWORD`. Each review has a **Delete** button. This page isn't linked anywhere on the site, and search engines are told not to list it.
+- Built-in spam protection: a hidden trap for bots, a limit of 3 reviews per device per day, and no links allowed in reviews.
+- To change the admin password, edit the `ADMIN_PASSWORD` secret in Cloudflare and redeploy.
+- You can also view or delete reviews directly in Cloudflare: **D1 → movemantra-reviews → Console**. For example, run `SELECT * FROM reviews ORDER BY id DESC;` to list them, or `DELETE FROM reviews WHERE id = 5;` to delete one.
+
 ## Step 4 – Test the live site
 
 Check these on your phone and on a computer:
@@ -104,6 +132,7 @@ Check these on your phone and on a computer:
 - [ ] "Call" buttons dial **+91 87875 74657**.
 - [ ] The map shows South Kolkata.
 - [ ] The mobile menu opens and closes.
+- [ ] On `/feedback`, post a test review. It should appear straight away. Then delete it at `/manage-reviews`.
 
 ## Step 5 – Set the real site address (important for SEO)
 
@@ -152,6 +181,8 @@ The `pages.dev` address is free forever. If you later buy a domain such as `move
 | Site shows a blank page                          | Check the build output directory is `dist`, not `build` or `/`.                           |
 | `git push` is rejected                           | You probably ticked "Add a README" when creating the repo. Run `git pull origin main --allow-unrelated-histories`, then push again. |
 | Changes do not appear                            | Look in Cloudflare → your project → **Deployments** for the latest build. Hard-refresh the browser with Ctrl+F5. |
+| Reviews say "the database has not been connected" | Check the D1 binding is named exactly `DB` (Step 3b), then **Retry deployment**. |
+| Admin page says the password has not been set up | Add the `ADMIN_PASSWORD` secret (Step 3b), then **Retry deployment**. |
 | Map does not appear                              | Some ad-blockers block Google Maps. The site shows an "Open in Google Maps" link instead. |
 
 ## Other free options (for reference)

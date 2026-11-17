@@ -12,6 +12,7 @@ const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
 const HomeVisits = lazy(() => import('./pages/HomeVisits'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Feedback = lazy(() => import('./pages/Feedback'));
+const ManageReviews = lazy(() => import('./pages/ManageReviews'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const router = createBrowserRouter(
@@ -27,6 +28,7 @@ const router = createBrowserRouter(
         { path: '/home-visits', element: <HomeVisits /> },
         { path: '/contact', element: <Contact /> },
         { path: '/feedback', element: <Feedback /> },
+        { path: '/manage-reviews', element: <ManageReviews /> },
         { path: '*', element: <NotFound /> },
       ],
     },

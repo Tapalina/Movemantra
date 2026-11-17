@@ -36,6 +36,8 @@ ${routes
 
 const robots = `User-agent: *
 Allow: /
+Disallow: /manage-reviews
+Disallow: /api/
 
 Sitemap: ${base}/sitemap.xml
 `;
